@@ -1,0 +1,110 @@
+{
+  "title": "東東的天空之島",
+  "subtitle": "一座網站需要哪五塊？哪幾塊才真的要錢？",
+  "islands": [
+    {
+      "id": "browser",
+      "name": "瀏覽器",
+      "en": "Browser",
+      "color": "#5BA9F6",
+      "tagline": "觀眾手上的那台機器",
+      "what": "把 HTML、JavaScript 跑起來、把 3D 畫面畫出來的，是觀眾自己的手機或電腦。這座島的運算力是觀眾出的，網站主人一毛錢都不用付。這就是為什麼十幾萬人同時逛，網站也不會掛。",
+      "security": "瀏覽器裡的東西使用者都看得到。任何金鑰、密碼、API token 都不能放在前端程式裡。"
+    },
+    {
+      "id": "frontend",
+      "name": "前端",
+      "en": "Frontend",
+      "color": "#F5A54A",
+      "tagline": "寫好的檔案：HTML、JS、JSON",
+      "what": "網站長什麼樣、點了會怎樣，全部寫在這些檔案裡。政策島和施政島的政見資料就是一支 JSON 檔，瀏覽器打開頁面時抓下來。檔案寫好就不會變，所以可以複製到全世界的機房去放。",
+      "security": "第三方的程式庫（像 Three.js）自己放在專案裡，不要吃別人的 CDN，別人的 CDN 被換掉你的網站就跟著中毒。再加上 Content-Security-Policy 標頭，限制只有自己網域的程式能跑。"
+    },
+    {
+      "id": "backend",
+      "name": "後端",
+      "en": "Backend",
+      "color": "#E06C8C",
+      "tagline": "幫大家做事的那台程式",
+      "what": "當網站要「幫使用者做一件事再記下來」，像投票、留言、排行榜，就需要一台一直開著的程式接住請求、檢查、再寫進資料庫。這是「靜態網站」和「動態網站」的分界線。在 GCP 上通常用 Cloud Run 跑，沒人用時自動縮到 0 台。",
+      "security": "後端一出現，就要想三件事：誰可以打它（驗證）、一個人一分鐘能打幾次（rate limit）、機器人灌票怎麼擋（驗證碼或 Cloud Armor）。"
+    },
+    {
+      "id": "database",
+      "name": "資料庫",
+      "en": "Database",
+      "color": "#8F7BE0",
+      "tagline": "把資料記住的地方",
+      "what": "靜態網站把「你的設定」存在你自己的瀏覽器裡（localStorage），關掉再開還在，但別人看不到。一旦要「大家都看得到同一份」，就得有資料庫。在 GCP 上最省事的是 Firestore，免費額度每天 5 萬次讀、2 萬次寫。",
+      "security": "使用者的資料一存進來，個資法就開始算：要有隱私權政策、要寫存取規則、要想好誰能讀誰能寫。資料庫的連線資訊只能放在後端，絕不能放進前端。"
+    },
+    {
+      "id": "cloud",
+      "name": "雲端",
+      "en": "Cloud",
+      "color": "#4FC3A1",
+      "tagline": "檔案放哪裡、誰負責送出去",
+      "what": "靜態檔案像印好的傳單，雲端的 CDN 像全世界的便利商店每家都放一疊，離誰近就從哪家拿。因為沒有「運算」只有「搬運」，所以 Cloudflare Pages 可以免費。搬到 GCP 有三條路：Firebase Hosting、Cloud Storage 加 Cloud CDN 加負載平衡器、Cloud Run 跑一個 nginx 容器。",
+      "security": "靜態網站最大的風險不是被偷，是被改：GitHub 帳號要開兩步驟驗證、部署用的 token 放在 secrets、DNS 設定鎖好。DDoS 由 Cloudflare 免費擋；在 GCP 要另外加 Cloud Armor。"
+    },
+    {
+      "id": "ai",
+      "name": "AI 模型",
+      "en": "AI model",
+      "color": "#F6D35B",
+      "tagline": "跟別人租的大腦",
+      "what": "「問 AI 政策」這種聊天功能，不是自己養一台 AI，是後端把問題轉給 Gemini 或 Claude 的 API，再把答案送回來。費用算在送進去和吐出來的字數（token）上，主機本身幾乎不花錢。",
+      "security": "API 金鑰只能放在後端。前端直接呼叫 AI 的網站，金鑰一定會被人撿走拿去刷。另外要限制每個人每天能問幾次，不然一個機器人就能把你一個月的預算刷光。"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "static",
+      "name": "空島模式",
+      "subtitle": "政策島、施政島現在的樣子",
+      "summary": "只亮三座：瀏覽器、前端、雲端。所有運算都在觀眾的手機裡跑，雲端只負責把檔案送出去。後端和資料庫是空的，所以叫空島。",
+      "total": "Cloudflare Pages：0 元／Firebase Hosting：0 元起／Cloud Run：約 US$0～36（30 萬訪次）",
+      "flows": [["browser", "cloud", "下載 HTML、JS、JSON"]],
+      "states": {
+        "browser": { "on": true, "role": "跑 Three.js，畫出整座島", "cost": "觀眾自己出" },
+        "frontend": { "on": true, "role": "index.html、app.js、data.json", "cost": "0" },
+        "backend": { "on": false, "role": "沒有", "cost": "0" },
+        "database": { "on": false, "role": "沒有，設定存在瀏覽器的 localStorage", "cost": "0" },
+        "cloud": { "on": true, "role": "CDN 把檔案送到離觀眾最近的地方", "cost": "免費方案到幾十美元，看流量" },
+        "ai": { "on": false, "hidden": true, "role": "沒有", "cost": "0" }
+      }
+    },
+    {
+      "id": "vote",
+      "name": "加投票功能",
+      "subtitle": "使用者的資料要存到你這邊",
+      "summary": "後端和資料庫亮起來。使用者按一下投票，請求飛到後端，後端檢查過再寫進資料庫，大家才看得到同一份票數。從這一刻起，錢和責任同時開始。",
+      "total": "Cloud Run 閒置歸零＋Firestore 免費額度內：約 US$0～5／月；流量大才往上加",
+      "flows": [["browser", "cloud", "下載檔案"], ["browser", "backend", "送出一票"], ["backend", "database", "寫入票數"]],
+      "states": {
+        "browser": { "on": true, "role": "顯示島、送出投票", "cost": "觀眾自己出" },
+        "frontend": { "on": true, "role": "多一支呼叫後端的程式", "cost": "0" },
+        "backend": { "on": true, "role": "Cloud Run：驗證、擋重複、寫入", "cost": "每月 200 萬次請求內免費" },
+        "database": { "on": true, "role": "Firestore：存票數", "cost": "每天 5 萬次讀、2 萬次寫內免費" },
+        "cloud": { "on": true, "role": "CDN 送檔案，負載平衡器把請求導到後端", "cost": "負載平衡器約 US$18／月起（可省略）" },
+        "ai": { "on": false, "hidden": true, "role": "沒有", "cost": "0" }
+      }
+    },
+    {
+      "id": "ai",
+      "name": "加 AI 問答",
+      "subtitle": "「問 AI 政策」聊天功能",
+      "summary": "再多一座外島：AI 模型。使用者的問題先到後端，後端加上政見資料一起送給 AI，再把答案傳回來。費用算在字數上，不在主機上；被灌爆的時候才會痛。",
+      "total": "主機幾乎 0；AI 費用看問答量，例如一天 1,000 次問答約 US$1～5（依模型）",
+      "flows": [["browser", "cloud", "下載檔案"], ["browser", "backend", "送出問題"], ["backend", "ai", "問題＋政見資料"], ["backend", "database", "記錄用量"]],
+      "states": {
+        "browser": { "on": true, "role": "聊天視窗", "cost": "觀眾自己出" },
+        "frontend": { "on": true, "role": "聊天介面的程式", "cost": "0" },
+        "backend": { "on": true, "role": "Cloud Run：收問題、呼叫 AI、限次數", "cost": "每月 200 萬次請求內免費" },
+        "database": { "on": true, "role": "Firestore：記每個人問了幾次", "cost": "免費額度內" },
+        "cloud": { "on": true, "role": "CDN 送檔案", "cost": "看流量" },
+        "ai": { "on": true, "hidden": false, "role": "Gemini 或 Claude API", "cost": "按 token 計費" }
+      }
+    }
+  ]
+}

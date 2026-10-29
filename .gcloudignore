@@ -1,0 +1,8 @@
+# 只把容器需要的東西上傳給 Cloud Build
+.git
+.gitignore
+.firebase
+firebase.json
+scripts/
+README.md
+LICENSE

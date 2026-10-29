@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>東東的天空之島｜一座網站需要哪五塊</title>
+<meta name="description" content="五座漂在雲上的小島：瀏覽器、前端、後端、資料庫、雲端。切換情境，看一座網站哪幾塊真的要錢、哪幾塊要顧資安。">
+<meta name="theme-color" content="#7fb8ea">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="day">
+
+<canvas id="stage" aria-label="五座漂在雲上的六邊形小島，可以拖曳旋轉；完整文字說明請看說明卡"></canvas>
+<div id="labels" class="labels"></div>
+
+<header class="brand">
+  <h1><small>東東的</small>天空之島</h1>
+  <p id="subtitle"></p>
+</header>
+
+<nav class="scenarios" id="scenarios" aria-label="情境切換"></nav>
+
+<section class="summary" id="summary" aria-live="polite">
+  <p id="summary-text"></p>
+  <p class="total"><span>每月費用</span><b id="summary-total"></b></p>
+</section>
+
+<aside class="card" id="card" hidden aria-label="島嶼說明">
+  <button class="close" id="card-close" aria-label="關閉說明">×</button>
+  <div class="eyebrow" id="card-en"></div>
+  <h2 id="card-name"></h2>
+  <p class="tagline" id="card-tagline"></p>
+  <dl>
+    <div><dt>在這個情境</dt><dd id="card-role"></dd></div>
+    <div><dt>費用</dt><dd id="card-cost"></dd></div>
+  </dl>
+  <h3>它在做什麼</h3>
+  <p id="card-what"></p>
+  <h3>資安要看的</h3>
+  <p id="card-security"></p>
+</aside>
+
+<div class="hud">
+  <button id="daynight" aria-pressed="false">夜晚</button>
+  <button id="help-btn" aria-expanded="false">說明</button>
+</div>
+
+<section class="help" id="help" hidden>
+  <h2>怎麼看這座島</h2>
+  <ul>
+    <li>五座島就是一座網站的五塊：瀏覽器、前端、後端、資料庫、雲端。</li>
+    <li>亮的島＝這個情境有在用；灰的島＝沒有。白線是資料在飛。</li>
+    <li>上面的按鈕切換情境，看哪幾塊會亮、費用怎麼變。</li>
+    <li>拖曳可以旋轉，點一座島或它的名牌看說明。</li>
+    <li>這個網站本身就是空島模式：沒有後端、沒有資料庫、沒有追蹤碼。</li>
+  </ul>
+  <button id="help-close">知道了</button>
+</section>
+
+<footer class="legend">
+  <span class="dot on"></span>有在用
+  <span class="dot off"></span>沒有
+  <span class="sep">｜</span>拖曳旋轉、點島看說明
+  <span class="sep">｜</span>東東 GCP 教學
+</footer>
+
+<section class="nowebgl" id="nowebgl" hidden>
+  <h2>這台裝置畫不出 3D</h2>
+  <p>沒關係，文字版一樣能看。用上面的按鈕切換情境：</p>
+  <ul id="nowebgl-list"></ul>
+</section>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
