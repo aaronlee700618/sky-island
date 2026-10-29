@@ -64,14 +64,45 @@
       "subtitle": "政策島、施政島現在的樣子",
       "summary": "只亮三座：瀏覽器、前端、雲端。所有運算都在觀眾的手機裡跑，雲端只負責把檔案送出去。後端和資料庫是空的，所以叫空島。",
       "total": "Cloudflare Pages：0 元／Firebase Hosting：0 元起／Cloud Run：約 US$0～36（30 萬訪次）",
-      "flows": [["browser", "cloud", "下載 HTML、JS、JSON"]],
+      "flows": [
+        [
+          "browser",
+          "cloud",
+          "下載 HTML、JS、JSON"
+        ]
+      ],
       "states": {
-        "browser": { "on": true, "role": "跑 Three.js，畫出整座島", "cost": "觀眾自己出" },
-        "frontend": { "on": true, "role": "index.html、app.js、data.json", "cost": "0" },
-        "backend": { "on": false, "role": "沒有", "cost": "0" },
-        "database": { "on": false, "role": "沒有，設定存在瀏覽器的 localStorage", "cost": "0" },
-        "cloud": { "on": true, "role": "CDN 把檔案送到離觀眾最近的地方", "cost": "免費方案到幾十美元，看流量" },
-        "ai": { "on": false, "hidden": true, "role": "沒有", "cost": "0" }
+        "browser": {
+          "on": true,
+          "role": "跑 Three.js，畫出整座島",
+          "cost": "觀眾自己出"
+        },
+        "frontend": {
+          "on": true,
+          "role": "index.html、app.js、data.json",
+          "cost": "0"
+        },
+        "backend": {
+          "on": false,
+          "role": "沒有",
+          "cost": "0"
+        },
+        "database": {
+          "on": false,
+          "role": "沒有，設定存在瀏覽器的 localStorage",
+          "cost": "0"
+        },
+        "cloud": {
+          "on": true,
+          "role": "CDN 把檔案送到離觀眾最近的地方",
+          "cost": "免費方案到幾十美元，看流量"
+        },
+        "ai": {
+          "on": false,
+          "hidden": true,
+          "role": "沒有",
+          "cost": "0"
+        }
       }
     },
     {
@@ -80,14 +111,55 @@
       "subtitle": "使用者的資料要存到你這邊",
       "summary": "後端和資料庫亮起來。使用者按一下投票，請求飛到後端，後端檢查過再寫進資料庫，大家才看得到同一份票數。從這一刻起，錢和責任同時開始。",
       "total": "Cloud Run 閒置歸零＋Firestore 免費額度內：約 US$0～5／月；流量大才往上加",
-      "flows": [["browser", "cloud", "下載檔案"], ["browser", "backend", "送出一票"], ["backend", "database", "寫入票數"]],
+      "flows": [
+        [
+          "browser",
+          "cloud",
+          "下載檔案"
+        ],
+        [
+          "browser",
+          "backend",
+          "送出一票"
+        ],
+        [
+          "backend",
+          "database",
+          "寫入票數"
+        ]
+      ],
       "states": {
-        "browser": { "on": true, "role": "顯示島、送出投票", "cost": "觀眾自己出" },
-        "frontend": { "on": true, "role": "多一支呼叫後端的程式", "cost": "0" },
-        "backend": { "on": true, "role": "Cloud Run：驗證、擋重複、寫入", "cost": "每月 200 萬次請求內免費" },
-        "database": { "on": true, "role": "Firestore：存票數", "cost": "每天 5 萬次讀、2 萬次寫內免費" },
-        "cloud": { "on": true, "role": "CDN 送檔案，負載平衡器把請求導到後端", "cost": "負載平衡器約 US$18／月起（可省略）" },
-        "ai": { "on": false, "hidden": true, "role": "沒有", "cost": "0" }
+        "browser": {
+          "on": true,
+          "role": "顯示島、送出投票",
+          "cost": "觀眾自己出"
+        },
+        "frontend": {
+          "on": true,
+          "role": "多一支呼叫後端的程式",
+          "cost": "0"
+        },
+        "backend": {
+          "on": true,
+          "role": "Cloud Run：驗證、擋重複、寫入",
+          "cost": "每月 200 萬次請求內免費"
+        },
+        "database": {
+          "on": true,
+          "role": "Firestore：存票數",
+          "cost": "每天 5 萬次讀、2 萬次寫內免費"
+        },
+        "cloud": {
+          "on": true,
+          "role": "CDN 送檔案，負載平衡器把請求導到後端",
+          "cost": "負載平衡器約 US$18／月起（可省略）"
+        },
+        "ai": {
+          "on": false,
+          "hidden": true,
+          "role": "沒有",
+          "cost": "0"
+        }
       }
     },
     {
@@ -96,14 +168,101 @@
       "subtitle": "「問 AI 政策」聊天功能",
       "summary": "再多一座外島：AI 模型。使用者的問題先到後端，後端加上政見資料一起送給 AI，再把答案傳回來。費用算在字數上，不在主機上；被灌爆的時候才會痛。",
       "total": "主機幾乎 0；AI 費用看問答量，例如一天 1,000 次問答約 US$1～5（依模型）",
-      "flows": [["browser", "cloud", "下載檔案"], ["browser", "backend", "送出問題"], ["backend", "ai", "問題＋政見資料"], ["backend", "database", "記錄用量"]],
+      "flows": [
+        [
+          "browser",
+          "cloud",
+          "下載檔案"
+        ],
+        [
+          "browser",
+          "backend",
+          "送出問題"
+        ],
+        [
+          "backend",
+          "ai",
+          "問題＋政見資料"
+        ],
+        [
+          "backend",
+          "database",
+          "記錄用量"
+        ]
+      ],
       "states": {
-        "browser": { "on": true, "role": "聊天視窗", "cost": "觀眾自己出" },
-        "frontend": { "on": true, "role": "聊天介面的程式", "cost": "0" },
-        "backend": { "on": true, "role": "Cloud Run：收問題、呼叫 AI、限次數", "cost": "每月 200 萬次請求內免費" },
-        "database": { "on": true, "role": "Firestore：記每個人問了幾次", "cost": "免費額度內" },
-        "cloud": { "on": true, "role": "CDN 送檔案", "cost": "看流量" },
-        "ai": { "on": true, "hidden": false, "role": "Gemini 或 Claude API", "cost": "按 token 計費" }
+        "browser": {
+          "on": true,
+          "role": "聊天視窗",
+          "cost": "觀眾自己出"
+        },
+        "frontend": {
+          "on": true,
+          "role": "聊天介面的程式",
+          "cost": "0"
+        },
+        "backend": {
+          "on": true,
+          "role": "Cloud Run：收問題、呼叫 AI、限次數",
+          "cost": "每月 200 萬次請求內免費"
+        },
+        "database": {
+          "on": true,
+          "role": "Firestore：記每個人問了幾次",
+          "cost": "免費額度內"
+        },
+        "cloud": {
+          "on": true,
+          "role": "CDN 送檔案",
+          "cost": "看流量"
+        },
+        "ai": {
+          "on": true,
+          "hidden": false,
+          "role": "Gemini 或 Claude API",
+          "cost": "按 token 計費"
+        }
+      }
+    },
+    {
+      "id": "security",
+      "name": "資安三問",
+      "subtitle": "被偷、被改、被灌爆",
+      "summary": "每座島都掛上鎖頭。靜態網站幾乎沒有東西可以被偷，真正的風險是被改：帳號、程式庫、標頭。一加後端，三個問題全部升級。點島看每一塊要顧什麼。",
+      "total": "大多是設定不花錢；DDoS 在 GCP 要加 Cloud Armor，每個政策約 US$5／月起、每條規則 US$1",
+      "flows": [],
+      "states": {
+        "browser": {
+          "on": true,
+          "role": "🔒 金鑰不能放這裡",
+          "cost": "0"
+        },
+        "frontend": {
+          "on": true,
+          "role": "🔒 程式庫自放＋CSP",
+          "cost": "0"
+        },
+        "backend": {
+          "on": true,
+          "role": "🔒 限次數、擋機器人",
+          "cost": "0"
+        },
+        "database": {
+          "on": true,
+          "role": "🔒 存取規則、個資法",
+          "cost": "0"
+        },
+        "cloud": {
+          "on": true,
+          "role": "🔒 2FA、DNS、Cloud Armor",
+          "cost": "Cloud Armor 約 US$5 起"
+        },
+        "ai": {
+          "on": true,
+          "hidden": false,
+          "role": "🔒 金鑰在後端、限次數",
+          "cost": "0"
+        }
       }
     }
   ]
