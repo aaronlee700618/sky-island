@@ -80,6 +80,10 @@ export PROJECT=你的專案ID
 ./scripts/02_firebase_hosting.sh
 ```
 
+<callout icon="💡">
+第一次在 Cloud Shell 用 firebase 要先登入（它跟 gcloud 是分開的）：腳本會自動跳出 `firebase login --no-localhost`，照畫面開網址、登入、把授權碼貼回來。不想登入的話，改跑 `PROJECT=你的專案ID python3 scripts/02b_firebase_rest_deploy.py`，它只靠 gcloud 直接呼叫 Hosting 的 API，做的事跟 firebase deploy 一模一樣，順便看懂 CLI 底下在做什麼。
+</callout>
+
 腳本做了兩件事：把 Firebase 加進你的 GCP 專案，然後把 `site/` 資料夾上傳。結束會印出網址 `https://你的專案ID.web.app`。
 
 <callout icon="⚠️">
@@ -236,7 +240,7 @@ cd ~/sky-island
 
 ## 實測筆記：做的時候遇到的意外
 
-- Cloud Shell 裡 firebase 指令已經裝好，但用非互動的 ssh 指令進去時找不到，要用 `bash -lc` 的登入 shell 才找得到。直接在 Cloud Shell 視窗打指令不會遇到。
+- Cloud Shell 裡 firebase 指令已經裝好，但它跟 gcloud 是分開登入的，第一次會說 No authorized accounts，要先 `firebase login --no-localhost`。趕時間就用 `02b_firebase_rest_deploy.py`，只靠 gcloud 的 token 直接打 Hosting API，一樣能上線。
 - 在 Mac 的 zsh 用 curl 直接呼叫 Firebase API 時，`$PROJECT:addFirebase` 會被 zsh 當成變數修飾子吃掉，要寫成 `${PROJECT}:addFirebase`。Cloud Shell 是 bash，不會遇到。
 - Mac 打包的 tar 檔在 Linux 解開會印一排 `LIBARCHIVE.xattr` 警告，無害，可以不理。
 - 第一次把 Firebase 加進專案，Hosting 的預設網站會自動建好，名字就是專案 ID，不用另外建。

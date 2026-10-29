@@ -1,5 +1,7 @@
 # 東東的天空之島
 
+- 成品：https://dong-dong-gcp-3.web.app （Firebase Hosting）／ https://sky-island-600195576280.asia-east1.run.app （Cloud Run）
+
 五座漂在雲上的六邊形小島：瀏覽器、前端、後端、資料庫、雲端。切換三個情境（空島模式、加投票功能、加 AI 問答），看一座網站哪幾塊會亮起來、哪幾塊才真的要錢、每一塊要顧什麼資安。
 
 這是「雲端架構師養成班」的教學範例，用來說明 2026 年流行的「XX 島」互動網站背後的結構：**純靜態、沒有後端、沒有資料庫、沒有追蹤碼**。
@@ -26,7 +28,7 @@ python3 -m http.server 8000
 
 | 路線 | 腳本 | 適合 |
 |---|---|---|
-| Firebase Hosting | `scripts/02_firebase_hosting.sh` | 最省事，沒綁卡也能用 |
+| Firebase Hosting | `scripts/02_firebase_hosting.sh`（或不用 CLI 的 `02b_firebase_rest_deploy.py`） | 最省事，沒綁卡也能用 |
 | Cloud Run 跑 nginx 容器 | `scripts/03_cloud_run.sh` | 之後要加後端的人 |
 
 ```bash
